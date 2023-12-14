@@ -1,6 +1,4 @@
 # This module will handle textual applications of qualitative data analysis
-# It does the following:
-# Sentiment analysis
 
 # Import the necessary libraries
 import os
