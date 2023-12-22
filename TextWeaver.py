@@ -3,6 +3,8 @@
 # Import the necessary libraries
 import nltk
 import os
+from colorama import Fore, Back, Style
+import time
 # Import the necessary modules
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -26,25 +28,69 @@ nltk.download('vader_lexicon')
 
 class Fabric:
     def __init__(self, text):
-        """
-        Initializes a Fabric object.
-
-        Parameters:
-        - text (str): The input text.
-
-        Attributes:
-        - text (str): The input text.
-        - tokens (list): The list of tokens extracted from the text.
-        - lemmatizer (WordNetLemmatizer): The WordNet lemmatizer object.
-        - stemmer (PorterStemmer): The Porter stemmer object.
-        - stop_words (set): The set of stop words in English.
-        """
         self.text = text
         self.tokens = word_tokenize(self.text)
         self.lemmatizer = WordNetLemmatizer()
         self.stemmer = PorterStemmer()
         self.stop_words = set(stopwords.words('english'))
+        self.codes = {}  # instantiate Codes class 
 
+    def assign_codes(self, key, value):
+        """
+        Assigns codes to the text.
+
+        Parameters:
+        - codes (dict): The dictionary of codes.
+        """
+
+        if key in self.codes:
+            self.codes[key].append(value)
+        else:
+            self.codes[key] = [value]
+    
+    def find_codes(self, key):
+        """
+        Takes as input the text and the codes and returns the indices where the key is found in the text.
+
+        Returns:
+        - list: list of indices where the key is found in the text.
+        """
+
+        text = self.text
+        codes = self.codes
+
+        for value in codes[key]:
+            return [i for i in range(len(text)) if text.startswith(value, i)]
+
+    
+    from colorama import Fore, Back, Style
+
+    def find_themes(self, theme):
+        """
+        Takes as input the text and the keys of dictionary codes and returns the indices where the values of each key is found in the text.
+
+        Returns:
+        - list: list of indices where the key is found in the text.
+        """
+
+        text = self.text
+        codes = self.codes
+        indices = [(i, i + len(value) - 1) for value in codes[theme] for i in range(len(text)) if text.startswith(value, i)]
+
+        # Reset the color to its original state
+        colored_text = Style.RESET_ALL
+        last_index = 0
+        for start, end in indices:
+            # Add the non-highlighted part
+            colored_text += text[last_index:start]
+            # Add the highlighted part
+            colored_text += Fore.GREEN + text[start:end+1] + Style.RESET_ALL
+            last_index = end + 1
+        # Add the remaining non-highlighted part
+        colored_text += text[last_index:]
+
+        print(colored_text)
+    
     def get_pos(self):
         """
         Returns the part-of-speech tags for the tokens.
@@ -100,14 +146,6 @@ class Fabric:
         return [token for token in self.tokens if not token in self.stop_words]
     
     def get_sentiment(self):
-        """
-        Returns the sentiment of the text.
-
-        Returns:
-        - int: The sentiment of the text.
-        """
-
-    def get_sentiment(self):
             """
             Returns the sentiment of the text.
 
@@ -117,8 +155,22 @@ class Fabric:
             sia = SentimentIntensityAnalyzer()
             sentiment = sia.polarity_scores(self.text)
             return sentiment
-
 class Garment:
+    """
+    A class representing a collection of fabrics.
+
+    Attributes:
+        directory (str): The directory path where the fabrics are located.
+        corpus (dict): A dictionary containing the loaded fabrics.
+
+    Methods:
+        load_corpus(): Loads the fabrics from the directory.
+        get_sentences(): Returns the sentences from each fabric in the corpus.
+        get_lemmas(): Returns the lemmas from each fabric in the corpus.
+        get_stems(): Returns the stems from each fabric in the corpus.
+        remove_stopwords(): Removes stopwords from each fabric in the corpus.
+        get_sentiment(): Returns the sentiment of each fabric in the corpus.
+    """
 
     def __init__(self, directory):
         self.directory = directory
