@@ -41,6 +41,10 @@ class TestFabric(unittest.TestCase):
         result = self.fabric.assign_codes("Testing", "test sentence")
         self.assertIsInstance(result, dict)
 
+    def test_get_codes(self):
+        result = self.fabric.find_codes("test sentence")
+        self.assertIsInstance(result, list)
+
 class TestGarment(unittest.TestCase):
     def setUp(self):
         self.garment = Garment(directory="tests/test_directory")
