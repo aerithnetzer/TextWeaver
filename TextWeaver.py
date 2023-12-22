@@ -1,11 +1,8 @@
 # This module will handle textual applications of qualitative data analysis
 
 # Import the necessary libraries
-import os
-import re
-import sys
 import nltk
-
+import os
 # Import the necessary modules
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize

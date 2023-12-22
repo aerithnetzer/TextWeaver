@@ -1,6 +1,6 @@
 # Tests
 
-from TextWeaver import Fabric
+from TextWeaver import Fabric, Garment
 
 text = "This is a test sentence. This is another test sentence."
 
@@ -13,3 +13,7 @@ print("####################################\nLEMMAS\n###########################
 print("####################################\nSTEMS\n####################################\n", fabric.get_stems())
 print("####################################\nSTOP WORDS\n####################################\n", fabric.remove_stopwords())
 print("####################################\nSENTIMENT\n####################################\n", fabric.get_sentiment())
+
+garment = Garment(directory="tests/test_directory")
+
+print("####################################\nSENTIMENT\n####################################\n", garment.get_sentiment())
