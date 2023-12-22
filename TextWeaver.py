@@ -26,24 +26,25 @@ nltk.download('vader_lexicon')
 
 class Fabric:
     def __init__(self, text):
-        """
-        Initializes a Fabric object.
-
-        Parameters:
-        - text (str): The input text.
-
-        Attributes:
-        - text (str): The input text.
-        - tokens (list): The list of tokens extracted from the text.
-        - lemmatizer (WordNetLemmatizer): The WordNet lemmatizer object.
-        - stemmer (PorterStemmer): The Porter stemmer object.
-        - stop_words (set): The set of stop words in English.
-        """
         self.text = text
         self.tokens = word_tokenize(self.text)
         self.lemmatizer = WordNetLemmatizer()
         self.stemmer = PorterStemmer()
         self.stop_words = set(stopwords.words('english'))
+        self.codes = {}  # instantiate Codes class 
+
+    def assign_codes(self, key, value):
+        """
+        Assigns codes to the text.
+
+        Parameters:
+        - codes (dict): The dictionary of codes.
+        """
+        codes = self.codes
+
+        codes[key] = value
+
+        return codes
 
     def get_pos(self):
         """
@@ -100,14 +101,6 @@ class Fabric:
         return [token for token in self.tokens if not token in self.stop_words]
     
     def get_sentiment(self):
-        """
-        Returns the sentiment of the text.
-
-        Returns:
-        - int: The sentiment of the text.
-        """
-
-    def get_sentiment(self):
             """
             Returns the sentiment of the text.
 
@@ -117,8 +110,22 @@ class Fabric:
             sia = SentimentIntensityAnalyzer()
             sentiment = sia.polarity_scores(self.text)
             return sentiment
-
 class Garment:
+    """
+    A class representing a collection of fabrics.
+
+    Attributes:
+        directory (str): The directory path where the fabrics are located.
+        corpus (dict): A dictionary containing the loaded fabrics.
+
+    Methods:
+        load_corpus(): Loads the fabrics from the directory.
+        get_sentences(): Returns the sentences from each fabric in the corpus.
+        get_lemmas(): Returns the lemmas from each fabric in the corpus.
+        get_stems(): Returns the stems from each fabric in the corpus.
+        remove_stopwords(): Removes stopwords from each fabric in the corpus.
+        get_sentiment(): Returns the sentiment of each fabric in the corpus.
+    """
 
     def __init__(self, directory):
         self.directory = directory

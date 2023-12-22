@@ -1,19 +1,53 @@
-# Tests
+# FILEPATH: /Users/aerith/warlock/TextWeaver/tests.py
+# Unit Tests
 
+import unittest
 from TextWeaver import Fabric, Garment
 
-text = "This is a test sentence. This is another test sentence."
+class TestFabric(unittest.TestCase):
+    def setUp(self):
+        self.text = "This is a test sentence. This is another test sentence."
+        self.fabric = Fabric(self.text)
 
-fabric = Fabric(text)
+    def test_get_named_entities(self):
+        result = self.fabric.get_named_entities()
+        self.assertIsInstance(result, list)
 
-print("####################################\nNAMED ENTITIES\n####################################\n", fabric.get_named_entities())
-print("####################################\nPARTS OF SPEECH\n####################################\n", fabric.get_pos())
-print("####################################\nSENTENCES\n####################################\n", fabric.get_sentences())
-print("####################################\nLEMMAS\n####################################\n", fabric.get_lemmas())
-print("####################################\nSTEMS\n####################################\n", fabric.get_stems())
-print("####################################\nSTOP WORDS\n####################################\n", fabric.remove_stopwords())
-print("####################################\nSENTIMENT\n####################################\n", fabric.get_sentiment())
+    def test_get_pos(self):
+        result = self.fabric.get_pos()
+        self.assertIsInstance(result, list)
 
-garment = Garment(directory="tests/test_directory")
+    def test_get_sentences(self):
+        result = self.fabric.get_sentences()
+        self.assertEqual(result, ["This is a test sentence.", "This is another test sentence."])
 
-print("####################################\nSENTIMENT\n####################################\n", garment.get_sentiment())
+    def test_get_lemmas(self):
+        result = self.fabric.get_lemmas()
+        self.assertIsInstance(result, list)
+
+    def test_get_stems(self):
+        result = self.fabric.get_stems()
+        self.assertIsInstance(result, list)
+
+    def test_remove_stopwords(self):
+        result = self.fabric.remove_stopwords()
+        self.assertIsInstance(result, list)
+
+    def test_get_sentiment(self):
+        result = self.fabric.get_sentiment()
+        self.assertIsInstance(result, dict)
+
+    def test_assign_codes(self):
+        result = self.fabric.assign_codes("Testing", "test sentence")
+        self.assertIsInstance(result, dict)
+
+class TestGarment(unittest.TestCase):
+    def setUp(self):
+        self.garment = Garment(directory="tests/test_directory")
+
+    def test_get_sentiment(self):
+        result = self.garment.get_sentiment()
+        self.assertIsInstance(result, dict)
+
+if __name__ == '__main__':
+    unittest.main()
