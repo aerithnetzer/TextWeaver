@@ -1,4 +1,4 @@
-# TextWeaver
+# TextWeaver 👕🗞️
 
 TextWeaver is a text-focused qualitative analysis tool. This is in _very_ early development, so I wouldn't try to do anything serious with it yet. But, you can use it to perform basic text analysis over a large corpus of text.
 
