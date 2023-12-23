@@ -4,7 +4,7 @@
 import nltk
 import os
 from colorama import Fore, Back, Style
-import time
+
 # Import the necessary modules
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -61,9 +61,6 @@ class Fabric:
 
         for value in codes[key]:
             return [i for i in range(len(text)) if text.startswith(value, i)]
-
-    
-    from colorama import Fore, Back, Style
 
     def find_themes(self, theme):
         """
@@ -172,16 +169,21 @@ class Garment:
         get_sentiment(): Returns the sentiment of each fabric in the corpus.
     """
 
-    def __init__(self, directory):
-        self.directory = directory
-        self.corpus = self.load_corpus()
+    def __init__(self):
+        self.corpus = None
 
-    def load_corpus(self):
+    def load_corpus_lfs(self, directory):
         corpus = {}
         for filename in os.listdir(self.directory):
             if filename.endswith(".txt"):
                 with open(os.path.join(self.directory, filename), 'r') as f:
                     corpus[filename] = Fabric(f.read())
+        return corpus
+    
+    def load_corpus_pandas(self, df):
+        corpus = {}
+        for index, row in df.iterrows():
+            corpus[row['text']] = Fabric(row['text'])
         return corpus
 
     def get_sentences(self):

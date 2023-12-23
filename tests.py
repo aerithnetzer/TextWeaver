@@ -53,5 +53,12 @@ class TestGarment(unittest.TestCase):
         result = self.garment.get_sentiment()
         self.assertIsInstance(result, dict)
 
+    def test_load_corpus_pandas(self):
+        '''
+        Create a dataframe of one column called text where each row has the text of a file.
+        '''
+        result = self.garment.load_corpus(mode="lfs")
+        self.assertIsInstance(result, dict)
+
 if __name__ == '__main__':
     unittest.main()
