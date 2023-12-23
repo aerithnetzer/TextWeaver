@@ -9,3 +9,9 @@ fabric.assign_codes("Testing", "testing")
 print(fabric.codes)
 
 print(fabric.find_themes("Testing"))
+
+print(fabric.make_child_theme("Types of Testing", "Testing"))
+
+print(fabric.codes)
+
+fabric.make_theme_graph()

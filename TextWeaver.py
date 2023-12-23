@@ -4,8 +4,14 @@
 import nltk
 import os
 from colorama import Fore, Back, Style
-import time
-# Import the necessary modules
+import networkx as nx
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+import plotly.express as px
+import pandas as pd
+import plotly.figure_factory as ff
+
+
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -90,7 +96,114 @@ class Fabric:
         colored_text += text[last_index:]
 
         print(colored_text)
-    
+
+    def make_child_theme(self, parent_theme, child_theme):
+        """
+        Takes as input the parent theme to which the child theme will be added.
+        Checks if the parent theme exists in the dictionary codes.
+        If it exists, the child theme is added to the parent theme.
+        If it does not exist, the parent theme is created and the child theme is added to it.
+        """
+        # See if parent_theme is in the codes dictionary           
+        if parent_theme in self.codes:
+            # if so, add child_theme to the parent_theme
+            self.codes[parent_theme].append(child_theme)
+            # remove duplicates
+            self.codes[parent_theme] = list(set(self.codes[parent_theme]))
+        else:
+            # if not, create parent_theme and add child_theme to it
+            self.codes[parent_theme] = [child_theme]
+
+    import plotly.figure_factory as ff
+
+    import plotly.graph_objects as go
+    import networkx as nx
+
+    def make_theme_graph(self):
+        """
+        Takes as input the dictionary codes and creates a hierarchical graph of the themes.
+        """
+
+        # Create a graph from the codes dictionary
+        # Create a graph object
+        # Create a graph object
+        graph = nx.Graph()
+
+        # Add nodes and edges from the codes dictionary
+        for key, values in self.codes.items():
+            graph.add_node(key)
+            for value in values:
+                graph.add_edge(key, value)
+
+        # Use spring layout to set 'pos' attribute for nodes
+        pos = nx.spring_layout(graph)
+        for node in graph.nodes():
+            graph.nodes[node]['pos'] = pos[node]
+        # Create edges
+        edge_x = []
+        edge_y = []
+        for edge in graph.edges():
+            x0, y0 = graph.nodes[edge[0]]['pos']
+            x1, y1 = graph.nodes[edge[1]]['pos']
+            edge_x.append(x0)
+            edge_x.append(x1)
+            edge_x.append(None)
+            edge_y.append(y0)
+            edge_y.append(y1)
+            edge_y.append(None)
+
+        edge_trace = go.Scatter(
+            x=edge_x, y=edge_y,
+            line=dict(width=0.5, color='#888'),
+            hoverinfo='none',
+            mode='lines')
+
+        # Create nodes
+        node_x = []
+        node_y = []
+        node_text = []
+        for node in graph.nodes():
+            x, y = graph.nodes[node]['pos']
+            node_x.append(x)
+            node_y.append(y)
+            node_text.append(node)  # Add node label
+
+        node_trace = go.Scatter(
+            x=node_x, y=node_y,
+            mode='markers',
+            hoverinfo='text',
+            text=node_text,  # Add node labels
+            marker=dict(
+                showscale=True,
+                colorscale='YlGnBu',
+                reversescale=True,
+                color=[],
+                size=10,
+                colorbar=dict(
+                    thickness=15,
+                    title='Node Connections',
+                    xanchor='left',
+                    titleside='right'
+                ),
+                line_width=2))
+        # Create Network Graph
+        fig = go.Figure(data=[edge_trace, node_trace],
+                     layout=go.Layout(
+                        title='Network graph made with Python',
+                        titlefont_size=16,
+                        showlegend=False,
+                        hovermode='closest',
+                        margin=dict(b=20,l=5,r=5,t=40),
+                        annotations=[ dict(
+                            text="Python code: <a href='https://plotly.com/ipython-notebooks/network-graphs/'> https://plotly.com/ipython-notebooks/network-graphs/</a>",
+                            showarrow=False,
+                            xref="paper", yref="paper",
+                            x=0.005, y=-0.002 ) ],
+                        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+                        )
+        fig.show()
+        
     def get_pos(self):
         """
         Returns the part-of-speech tags for the tokens.

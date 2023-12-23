@@ -45,6 +45,10 @@ class TestFabric(unittest.TestCase):
         result = self.fabric.find_codes("test sentence")
         self.assertIsInstance(result, list)
 
+    def test_make_child_theme(self):
+        result = self.fabric.make_child_theme("test sentence")
+        self.assertIsInstance(result, str)
+
 class TestGarment(unittest.TestCase):
     def setUp(self):
         self.garment = Garment(directory="tests/test_directory")
