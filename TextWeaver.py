@@ -98,21 +98,21 @@ class Fabric:
         print(colored_text)
 
     def make_child_theme(self, parent_theme, child_theme):
-        """
-        Takes as input the parent theme to which the child theme will be added.
-        Checks if the parent theme exists in the dictionary codes.
-        If it exists, the child theme is added to the parent theme.
-        If it does not exist, the parent theme is created and the child theme is added to it.
-        """
-        # See if parent_theme is in the codes dictionary           
-        if parent_theme in self.codes:
-            # if so, add child_theme to the parent_theme
-            self.codes[parent_theme].append(child_theme)
-            # remove duplicates
-            self.codes[parent_theme] = list(set(self.codes[parent_theme]))
-        else:
-            # if not, create parent_theme and add child_theme to it
-            self.codes[parent_theme] = [child_theme]
+
+        codes = self.codes
+
+        print(child_theme)
+        # Create a new dictionary for the parent theme if it does not exist
+        if parent_theme not in codes:
+            codes[parent_theme] = {}
+        
+        # Add the child theme as a subdictionary to the parent theme
+        codes[parent_theme][child_theme] = codes[child_theme]
+
+        # Delete the old child theme
+        del codes[child_theme]
+
+
 
     import plotly.figure_factory as ff
 
@@ -311,3 +311,5 @@ class Garment:
     
     def get_sentiment(self):
         return {filename: fabric.get_sentiment() for filename, fabric in self.corpus.items()}
+    
+    
