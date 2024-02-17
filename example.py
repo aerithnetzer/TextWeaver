@@ -13,8 +13,7 @@ fabric0.assign_codes("Testing", "testing")
 fabric1.assign_codes("Animals", "fox")
 fabric1.assign_codes("Animals", "dog")
 
+print(fabric0.move_code("Testing", "Test"))
+
 print(fabric0.codes)
 
-print(fabric0.find_themes("Testing"))
-
-print(fabric1.find_themes("Animals"))

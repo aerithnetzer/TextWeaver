@@ -48,6 +48,14 @@ class TestFabric(unittest.TestCase):
         result = self.fabric.find_codes("test sentence")
         self.assertIsInstance(result, list)
 
+    def test_move_code(self):
+        # See if key "Test" exists and has a subkey "Testing" with the value "test sentence"
+        self.fabric.assign_codes("Testing", "Test sentence")
+        result = self.fabric.move_code("Testing", "Test")
+        self.assertEqual(result["Test"]["Testing"], ["Test sentence"])
+        # Check if the old key "Testing" is gone
+        self.assertNotIn("Testing", result)
+
 class TestGarment(unittest.TestCase):
     def setUp(self):
         self.garment = Garment(directory="tests/test_directory")
