@@ -15,6 +15,8 @@ from nltk import ne_chunk
 from nltk import sent_tokenize
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+from colorama import Fore, Back, Style
+
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -63,8 +65,6 @@ class Fabric:
             return [i for i in range(len(text)) if text.startswith(value, i)]
 
     
-    from colorama import Fore, Back, Style
-
     def find_themes(self, theme):
         """
         Takes as input the text and the keys of dictionary codes and returns the indices where the values of each key is found in the text.
@@ -155,6 +155,8 @@ class Fabric:
             sia = SentimentIntensityAnalyzer()
             sentiment = sia.polarity_scores(self.text)
             return sentiment
+    
+
 class Garment:
     """
     A class representing a collection of fabrics.
@@ -198,3 +200,5 @@ class Garment:
     
     def get_sentiment(self):
         return {filename: fabric.get_sentiment() for filename, fabric in self.corpus.items()}
+
+

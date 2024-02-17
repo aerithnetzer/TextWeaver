@@ -38,9 +38,12 @@ class TestFabric(unittest.TestCase):
         self.assertIsInstance(result, dict)
 
     def test_assign_codes(self):
-        result = self.fabric.assign_codes("Testing", "test sentence")
+        self.fabric.assign_codes("Testing", "test sentence")
+        result = self.fabric.codes
         self.assertIsInstance(result, dict)
-
+        self.assertIn("Testing", result)
+        self.assertEqual(result["Testing"], ["test sentence"])
+        
     def test_get_codes(self):
         result = self.fabric.find_codes("test sentence")
         self.assertIsInstance(result, list)
