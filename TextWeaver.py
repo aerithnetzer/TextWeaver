@@ -155,7 +155,22 @@ class Fabric:
             sia = SentimentIntensityAnalyzer()
             sentiment = sia.polarity_scores(self.text)
             return sentiment
-    
+    def move_code(self, old_key, new_key):
+        """
+        Moves one code key and it's values to a new key.
+
+        For example, if we have a code key "Testing" with values "test sentence" and "test sentence 2", we can move the key to "Test" and the keys
+        and values will moved to the new key.
+        """
+        
+        # Get the key to move
+        
+        if old_key in self.codes:
+            self.codes[new_key] = {old_key: self.codes[old_key]}
+            del self.codes[old_key]
+        else: 
+            raise ValueError("The original key does not exist in the dictionary")
+        return self.codes
 
 class Garment:
     """
